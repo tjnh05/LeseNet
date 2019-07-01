@@ -7,7 +7,6 @@ import time
 from image_crawler import ImageCrawler
 from image_downloader import ImageDownloader
 
-from pprint import pprint
 import re
 
 SEP = '-' * 70 + '\n'
@@ -28,8 +27,8 @@ def crawl(keyword, n_scroll, engine='baidu'):
 
     keywordHash = get_md5(keyword)
 
-    link_save_dir = os.path.join('../data/links', keywordHash)
-    image_save_dir = os.path.join('../data/images', keywordHash)
+    link_save_dir = os.path.join (os.getcwd (), '..', 'data', 'links', keywordHash)
+    image_save_dir = os.path.join (os.getcwd (), '..', 'data', 'images', keywordHash)
 
     print('Keyword:', keyword)
     print('Number of scrolling:', n_scroll)
@@ -69,22 +68,15 @@ if __name__ == "__main__":
     if len(sys.argv)<3:
         print("Usage: python3.x crawler.py startLine endLine")
         startLine = 1
-        endLine = 5
+        endLine = 2
     else:
         startLine, endLine = int(sys.argv[1])-1, int(sys.argv[2])-1
 
-    hierachy = os.path.join('../hierarchy', 'hierarchy.yml')
-    '''
-    f = open(hierachy, encoding="utf-8", errors="surrogateescape")
-    lines = f.read().split("\n")
-    f.close()
-    '''
+    hierachy = os.path.join (os.getcwd(), '..','hierarchy', 'hierarchy.yml')
+
     with open(hierachy, encoding="utf-8", errors="surrogateescape") as f:
         lines = f.read ().split ("\n")
-
     lines = [line.strip() for line in lines if re.search(r'^      \s*\w+[^类]$', line)]
-    #pprint(lines)
-    #sys.exit(0)
 
     for i in range(len(lines)):
         if startLine <= i and i<=endLine:
